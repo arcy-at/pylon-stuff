@@ -26,7 +26,7 @@ const permissions = [
   'MOVE_MEMBERS',
   'USE_VAD',
   'CHANGE_NICKNAME',
-  'CHANGE_NICKNAMES',
+  'MANAGE_NICKNAMES',
   'MANAGE_ROLES',
   'MANAGE_WEBHOOKS',
   'MANAGE_EMOJIS'
@@ -67,7 +67,7 @@ discord.on('GUILD_ROLE_UPDATE', async (event, old) => {
     const diffBlock = `\`\`\`diff
 ${diff.added.length ? diff.added.join('\n') : ''}${
       diff.removed.length ? '\n' + diff.removed.join('\n') : ''
-    }
+    }󠁡
 \`\`\``;
     ch.sendMessage(
       `${timestamp} ${
