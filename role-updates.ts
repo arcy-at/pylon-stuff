@@ -57,6 +57,7 @@ export function makePermissionDiff(
 }
 const logging_channel_id = '811678324391804968';
 discord.on('GUILD_ROLE_UPDATE', async (event, old) => {
+  const messages = [];
   const ch = (await discord.getGuildTextChannel(logging_channel_id))!;
   const timestamp = `\`[${new Date()
     .toLocaleTimeString()
@@ -73,7 +74,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
       diff.removed.length ? '\n' + diff.removed.join('\n') : ''
     }󠁡
 \`\`\``;
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} permissions edited: ${diffBlock}`
@@ -83,7 +84,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
    * Role position changed
    */
   if (event.role.position !== old.position) {
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} position was changed: \`${
@@ -95,7 +96,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
    * Role hoist changed
    */
   if (event.role.hoist !== old.hoist) {
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} hoist state was changed to \`${capitalizeWords(
@@ -107,7 +108,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
    * Role mentionable changed
    */
   if (event.role.mentionable !== old.mentionable) {
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} mentionable state was changed to \`${capitalizeWords(
@@ -120,7 +121,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
    * NOTE: This should never fire.
    */
   if (event.role.managed !== old.managed) {
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} managed role status was changed to \`${capitalizeWords(
@@ -134,7 +135,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
   if (event.role.color !== old.color) {
     const oldColor = old.color.toString(16);
     const newColor = event.role.color.toString(16);
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} color was changed: \`#${oldColor}\` ➡️ \`${newColor}\``
@@ -144,7 +145,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
    * Role name changed
    */
   if (event.role.name !== old.name) {
-    ch.sendMessage(
+    messages.push(
       `${timestamp} ${
         discord.decor.Emojis.GEAR
       } (\`Guild Role Update\`) ${event.role.toMention()} ${formattedID} name was changed:  \n**•** __Before__: \`${
@@ -152,4 +153,7 @@ ${diff.added.length ? diff.added.join('\n') : ''}${
       }\`\n**•** __After__:   \`${event.role.name}\``
     );
   }
+  await ch.sendMessage(
+    messages.length ? messages.join('\n') : 'An unknown role change happened.'
+  );
 });
