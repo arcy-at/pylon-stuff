@@ -108,7 +108,8 @@ discord.on(discord.Event.GUILD_UPDATE, async (current, old) => {
         current.widgetChannelId ? `<#${current.widgetChannelId}>` : undefined
       )
     );
-  if (current.features !== old.features) {
+  // shittily check if arrays are equal
+  if (current.features.sort().toString() == old.features.sort().toString()) {
     const diff = makeArrayDiff(current.features, old.features);
     const diffBlock = `\`\`\`diff
 ${diff.added.join('\n')}
