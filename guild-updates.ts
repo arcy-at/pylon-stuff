@@ -108,8 +108,8 @@ discord.on(discord.Event.GUILD_UPDATE, async (current, old) => {
         current.widgetChannelId ? `<#${current.widgetChannelId}>` : undefined
       )
     );
-  // shittily check if arrays are equal
-  if (current.features.sort().toString() == old.features.sort().toString()) {
+  // shittily check if arrays arent equal
+  if (current.features.sort().toString() !== old.features.sort().toString()) {
     const diff = makeArrayDiff(current.features, old.features);
     const diffBlock = `\`\`\`diff
 ${diff.added.join('\n')}
@@ -120,7 +120,17 @@ ${diff.removed.join('\n')}
 
   const ch = await discord.getGuildTextChannel(loggingchannel);
   if (!ch) throw new Error('invalid logging channel id');
-  ch.sendMessage(messages.join('\n'));
+  const timestamp = `\`[${new Date()
+    .toLocaleTimeString()
+    .replace(/[^\d:]/g, '')}]\``;
+  ch.sendMessage(
+    messages
+      .map(
+        (e) =>
+          `${timestamp} ${discord.decor.Emojis.MAP} (\`Guild Update\`) ${e}`
+      )
+      .join('\n')
+  );
 });
 function getChangeType(itemName: string, oldVal: any, newVal: any) {
   if (!oldVal && newVal) return `${itemName} added: ${newVal}`;
