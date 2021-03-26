@@ -28,9 +28,9 @@ ${usage}
     );
   }
 }
-config.commands.on(
+commands.on(
   {
-    name: 'gennum',
+    name: 'testcmd',
     onError: errorFn
   },
   (args) => ({
