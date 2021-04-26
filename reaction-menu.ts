@@ -1,5 +1,5 @@
 const commands = new discord.command.CommandGroup();
-const defaultEmbedColor: number = 0x2f3136;
+const defaultEmbedColor: number = 3092790; // 0x2f3136 (cry about it if you dont like decimal)
 
 let messageId: string | null = null;
 let authorId: string | null = null;
