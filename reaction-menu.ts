@@ -1,7 +1,9 @@
 const commands = new discord.command.CommandGroup();
+const defaultEmbedColor: number = 0x2f3136;
+
 let messageId: string | null = null;
 let authorId: string | null = null;
-const defaultEmbedColor: number = 3092790; // 0x2f3136
+
 interface IMenuItem {
   title: string; // The embed's title
   text: string; // The embed's text
@@ -10,6 +12,7 @@ interface IMenuItem {
   color?: number; // The color on the side of the embed
   aliases?: string[];
 }
+
 const options = new Map<discord.decor.Emojis | string, IMenuItem>([
   [
     discord.decor.Emojis.A,
@@ -39,6 +42,7 @@ const options = new Map<discord.decor.Emojis | string, IMenuItem>([
 ]);
 
 const optionKeys = Array.from(options.keys());
+
 commands.on(
   {
     name: 'menu',
